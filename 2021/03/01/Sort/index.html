@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#FFBBFF"><meta name="author" content="H0ypothesis"><meta name="copyright" content="H0ypothesis"><meta name="generator" content="Hexo 5.4.0"><meta name="theme" content="hexo-theme-yun"><title>笔记整理：排序算法 | 压缩失真の小窝</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.25/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_dxory92pb0h.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link class="aplayer-style-marker" rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script class="aplayer-script-marker" src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" defer></script><script class="meting-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js" defer></script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="icon" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#FFBBFF"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"h0ypothesis.github.io","root":"/","title":"压缩失真の小站","version":"1.6.1","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"local_search":{"path":"/search.xml"},"fireworks":{"colors":["255, 107, 129","218, 112, 214","160, 32, 240"]}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><meta name="description" content="简单排序Insert_sort  插入排序类比于打扑克牌，当抽牌时，玩家从牌库中抽取扑克牌，并按照大小顺序插入手牌，机制是维护有序序列，不断插入元素。  模型细节：创建一个数组模拟手牌，初始数组为牌库。从初始数组中拿取元素（抽牌），与创建的数组中元素对比大小，找到位置（找牌），插入元素（放牌）。  代码细节：创建insert()函数来实现插入元素的操作:  找到元素位置pos 将原本位置的r[po">
+<meta property="og:type" content="article">
+<meta property="og:title" content="笔记整理：排序算法">
+<meta property="og:url" content="https://h0ypothesis.github.io/2021/03/01/Sort/index.html">
+<meta property="og:site_name" content="压缩失真の小窝">
+<meta property="og:description" content="简单排序Insert_sort  插入排序类比于打扑克牌，当抽牌时，玩家从牌库中抽取扑克牌，并按照大小顺序插入手牌，机制是维护有序序列，不断插入元素。  模型细节：创建一个数组模拟手牌，初始数组为牌库。从初始数组中拿取元素（抽牌），与创建的数组中元素对比大小，找到位置（找牌），插入元素（放牌）。  代码细节：创建insert()函数来实现插入元素的操作:  找到元素位置pos 将原本位置的r[po">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-01T04:08:08.000Z">
+<meta property="article:modified_time" content="2021-07-19T08:00:52.599Z">
+<meta property="article:author" content="H0ypothesis">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="H0ypothesis"><img width="96" loading="lazy" src="/images/avatar.jpg" alt="H0ypothesis"><span class="site-author-status" title="愿逐月华流照君。">🌙</span></a><div class="site-author-name"><a href="/about/">H0ypothesis</a></div><span class="site-name">压缩失真の小窝</span><sub class="site-subtitle"></sub><div class="site-desciption">愿逐月华流照君</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><a class="site-state-item hty-icon-button" href="/about/#comment" title="留言板"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-clipboard-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/H0ypothesis" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=sunjia21jun@vip.qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="http://wpa.qq.com/msgrd?v=3&amp;uin=744032262&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://weibo.com/3291598991/" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/11183352" title="哔哩哔哩动画" target="_blank" style="color:FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a><a class="links-item hty-icon-button" href="/girls/" style="color:hotpink"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-women-line"></use></svg></a><a class="links-item hty-icon-button" href="/albums/" style="color:FF6B81"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-gallery-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%8E%92%E5%BA%8F"><span class="toc-number">1.</span> <span class="toc-text">简单排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Insert-sort"><span class="toc-number">1.1.</span> <span class="toc-text">Insert_sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bubble-sort"><span class="toc-number">1.2.</span> <span class="toc-text">Bubble_sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Select-sort"><span class="toc-number">1.3.</span> <span class="toc-text">Select_sort</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">优化排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Merge-sort"><span class="toc-number">2.1.</span> <span class="toc-text">Merge_sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-sort"><span class="toc-number">2.2.</span> <span class="toc-text">Quick_sort</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://h0ypothesis.github.io/2021/03/01/Sort/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="H0ypothesis"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="压缩失真の小窝"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">笔记整理：排序算法</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2021-03-01 12:08:08" itemprop="dateCreated datePublished" datetime="2021-03-01T12:08:08+08:00">2021-03-01</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-07-19 16:00:52" itemprop="dateModified" datetime="2021-07-19T16:00:52+08:00">2021-07-19</time></div><span class="leancloud_visitors" id="/2021/03/01/Sort/" data-flag-title="笔记整理：排序算法"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-chat-3-line"></use></svg> <span class="waline-comment-count" id="/2021/03/01/Sort/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E7%AC%94%E8%AE%B0/" style="--text-color:dimgray" itemprop="url" rel="index"><span itemprop="text">笔记</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E7%AE%97%E6%B3%95/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">算法</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#FFBBFF;"><h1 id="简单排序"><a href="#简单排序" class="headerlink" title="简单排序"></a>简单排序</h1><h2 id="Insert-sort"><a href="#Insert-sort" class="headerlink" title="Insert_sort"></a>Insert_sort</h2><p>  插入排序类比于打扑克牌，当抽牌时，玩家从牌库中抽取扑克牌，并按照大小顺序插入手牌，机制是维护有序序列，不断插入元素。</p>
+<ul>
+<li><p>模型细节：<br>创建一个数组模拟手牌，初始数组为牌库。从初始数组中拿取元素（抽牌），与创建的数组中元素对比大小，找到位置（找牌），插入元素（放牌）。</p>
+</li>
+<li><p>代码细节：<br>创建<code>insert()</code>函数来实现插入元素的操作:</p>
+<ul>
+<li>找到元素位置pos</li>
+<li>将原本位置的r[pos], r[pos + 1], r[pos + 2]…全部后移</li>
+<li>将抽取元素赋值给r[pos]</li>
+</ul>
+<p>对每一个初始数组的元素调用insert()函数</p>
+</li>
+<li><p>具体代码:</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++"> void insert(int x)&#123;
+    int pos;
+    for(pos &#x3D; 0; pos &lt; tot; pos++ )
+        if(r[pos] &gt;&#x3D; x) break;
+    for(int k &#x3D; tot; k &gt;&#x3D; pos; k--)&#123;
+    	r[k+1] &#x3D; r[k];
+    &#125;
+    r[pos] &#x3D; x;
+    tot++
+&#125;  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>优化空间：<br>  在原数组中整理排序，使用被浪费掉的原始空间。<br>  具体代码：</p>
+  <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void insert(int x)&#123;
+    for(int i &#x3D; 0; i &lt; n; i++)&#123;
+        int k, x &#x3D; a[i];
+        for(k &#x3D; 0; k &lt; i &amp;&amp; a[k] &lt; x; k++); &#x2F;&#x2F;找到插入点k
+        for(int p &#x3D; i - 1; p &gt;&#x3D; k; p--)&#123;
+            a[p + 1] &#x3D; a[p];
+        	a[k] &#x3D; x;
+        &#125;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>  插入排序的复杂度为O(n^2)</p>
+</li>
+</ul>
+<h2 id="Bubble-sort"><a href="#Bubble-sort" class="headerlink" title="Bubble_sort"></a>Bubble_sort</h2><p>  冒泡排序类似于泡泡浮出水面的过程，气泡浮出水面 ，由于水压 $/rho$ gh不断减小，气泡不断变大，冒泡排序每次考虑相邻的两个元素，比较大小并将较大的放在右侧，重复n次的过程就像气泡冒出水面。<br>  本质是每次将最大的数字放到最右侧。</p>
+<ul>
+<li>代码实现：<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void bubble_sort(int a[], int n)&#123;
+    for(int i &#x3D; 0; i &lt; n; i++)
+        for(int j &#x3D; 0; j &lt; n - 1; j++)     
+        &#x2F;&#x2F;改成j &lt; n - i - 1可以节省每一次尾部已经排完的元素比较次数
+            if(a[j] &gt; a[j + 1]) swap(a[j], a[j + 1]);
+            &#x2F;&#x2F;swap()在algorithm库中
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<p>  冒泡排序的复杂度也为O(n^2)</p>
+<h2 id="Select-sort"><a href="#Select-sort" class="headerlink" title="Select_sort"></a>Select_sort</h2><p>  选择排序的原理是进行多次扫描，将每一次扫描得到的最小元素置于最做左侧，经过n次扫描可得到从小到大的一次序列</p>
+   <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void selct_sort(int a[], int n)&#123;
+	for(int i &#x3D; 0; i &lt; n; i++)&#123;
+    	int cur_min &#x3D; i;
+    	for(int j &#x3D; i; j &lt; n; i++)&#123;
+    		if(a[j] &lt; a[cur_min]) cur_min &#x3D; j;
+    		swap(a[i], a[cur_min])
+		&#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>  选择排序的复杂度为O(n^2)</p>
+<ul>
+<li>以上三种排序方式均为简单排序，代码实现比较简单，但是效率比较差，需要较长的排序时间。<br>已经证明，基于比较的排序最快也只能做到O(nlogn)，以下介绍两种O(nlogn)的排序方法：</li>
+</ul>
+<h1 id="优化排序"><a href="#优化排序" class="headerlink" title="优化排序"></a>优化排序</h1><h2 id="Merge-sort"><a href="#Merge-sort" class="headerlink" title="Merge_sort"></a>Merge_sort</h2><p>  归并排序基于分治的思想，简要思路如下：</p>
+<ul>
+<li>将初始数组a[l, r]拆分成a[l, mid], a[mid + 1, r] 两个部分</li>
+<li>调用MergeSort(l, mid), MergeSort(mid + 1, r), 将两个小部分各自排好序</li>
+<li>将两个有序数组合并成一个大的有序数组，覆盖a[l, r]<br>代码实现：<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void mergesort(int a[], int l, int r)&#123;
+    if(l - r &#x3D;&#x3D; 1) return;
+    int mid &#x3D; (l + r) &#x2F; 2;
+    mergesort(a, l, mid);
+    mergesort(a, mid, r);
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+将两个数组合并的方法：<ul>
+<li>从左到右生成数组可以看成从A, B里面一个一个取元素。</li>
+<li>若A已经取完，则从B中取；若B已经取完，则从A中取。</li>
+<li>A, B都没取完，则比较A, B头部元素大小，选择小的那个，大小一样则任意取。<br>代码实现<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">int ls &#x3D; l, lt &#x3D; mid, rs &#x3D; mid, rt &#x3D; r, pos &#x3D; l;
+    while(ls &lt; lt &amp;&amp; rs &lt; rt)&#123;
+        if(a[ls] &lt; a[rs])
+            t[pos++] &#x3D; a[ls++];
+        else
+            t[pos++] &#x3D; a[rs++];
+    &#125;
+    while(ls &lt; lt)&#123;
+        t[pos++] &#x3D; a[ls++];
+    &#125;
+    while(rs &lt; rt)&#123;
+        t[pos++] &#x3D; a[rs++];
+    &#125;
+    for(int i &#x3D; l; i &lt; r; i++)&#123;
+		a[i] &#x3D; t[i]
+    &#125;
+  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="Quick-sort"><a href="#Quick-sort" class="headerlink" title="Quick_sort"></a>Quick_sort</h2><p>  快速排序，假设有一群人，按照身高排序，可以按照以下方式：</p>
+<ul>
+<li><p>随便选一个人</p>
+</li>
+<li><p>比之矮的排左边，比之高的排右边</p>
+</li>
+<li><p>把他左右边的人分别排序<br>代码实现：</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void quick_sort(int a[], int l, int r)&#123;
+	if(r - l &lt;&#x3D; 1) return;
+    int flag &#x3D; a[l];&#x2F;&#x2F;哨兵，可以伪随机化为a[rand() % (r - l) + l， 防止被卡]
+    int x &#x3D; l, y &#x3D; r;
+    int x, y;
+    for(int i &#x3D; l; i &lt; r; i++)&#123;
+        if(a[i] &lt; flag)
+            t[x++] &#x3D; a[i];
+        if(a[i] &gt; flag)
+            t[--y] &#x3D; a[i];
+    &#125;
+    for(int i &#x3D; l; i &lt; x; i++)
+        a[i] &#x3D; t[i];
+    for(int i &#x3D; y; i &lt; r, i++)
+        a[i] &#x3D; t[i];
+    for(int i &#x3D; x; i &lt; y; i++)
+        a[i] &#x3D; flag;
+    quick_sort(a, l, x);
+    quick_sort(a, y, r);
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>排序STL sort可以直接使用algorithm库排序，指定cmp函数反向排序，或者重载小于号定义</p>
+</li>
+</ul>
+</div><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hand-coin-line"></use></svg></span><div id="reward-comment">我很可爱，清亏我全！</div><div id="qr" style="display:none;"><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/gh/h0ypothesis/img/webpage/wechatpay.jpg"><img loading="lazy" src="https://cdn.jsdelivr.net/gh/h0ypothesis/img/webpage/wechatpay.jpg" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-pay-line"></use></svg></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>H0ypothesis</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://h0ypothesis.github.io/2021/03/01/Sort/" title="笔记整理：排序算法">https://h0ypothesis.github.io/2021/03/01/Sort/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2021/07/17/hello-world/" rel="prev" title="Hello World"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">Hello World</span></a></div><div class="post-nav-item"></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span></span><br></div><div id="waline"></div><script>Yun.utils.getScript("https://cdn.jsdelivr.net/npm/@waline/client/dist/Waline.min.js", () => {
+  const walineConfig = {"enable":true,"serverURL":"https://comment-beta.vercel.app/","comment":true,"visitor":true,"el":"#waline","lang":"zh-CN"}
+  walineConfig.path = "/2021/03/01/Sort/"
+  new Waline(walineConfig)
+}, window.Waline);</script></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> H0ypothesis</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v5.4.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.6.1</span></div><div class="live_time"><span>本博客已萌萌哒地运行了</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2021-07-17T21:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#FFBBFF" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-search-line"></use></svg></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="/js/search/local-search.js" defer></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-close-line"></use></svg></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div id="local-search-result"></div></div></div></body></html>

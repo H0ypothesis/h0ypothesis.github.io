@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>评论区</title>
+      <link href="/2021/07/19/%E8%AF%84%E8%AE%BA%E5%8C%BA/"/>
+      <url>/2021/07/19/%E8%AF%84%E8%AE%BA%E5%8C%BA/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js"></script>]]></content>
+      
+      
+      <categories>
+          
+          <category> 功能区 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 评论 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2021/07/17/hello-world/"/>
       <url>/2021/07/17/hello-world/</url>
@@ -11,6 +36,37 @@
         <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js"></script><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World!"></a>Hello World!</h2>]]></content>
       
       
+      <categories>
+          
+          <category> 日记 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>笔记整理：排序算法</title>
+      <link href="/2021/03/01/Sort/"/>
+      <url>/2021/03/01/Sort/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js"></script><h1 id="简单排序"><a href="#简单排序" class="headerlink" title="简单排序"></a>简单排序</h1><h2 id="Insert-sort"><a href="#Insert-sort" class="headerlink" title="Insert_sort"></a>Insert_sort</h2><p>  插入排序类比于打扑克牌，当抽牌时，玩家从牌库中抽取扑克牌，并按照大小顺序插入手牌，机制是维护有序序列，不断插入元素。</p><ul><li><p>模型细节：<br>创建一个数组模拟手牌，初始数组为牌库。从初始数组中拿取元素（抽牌），与创建的数组中元素对比大小，找到位置（找牌），插入元素（放牌）。</p></li><li><p>代码细节：<br>创建<code>insert()</code>函数来实现插入元素的操作:</p><ul><li>找到元素位置pos</li><li>将原本位置的r[pos], r[pos + 1], r[pos + 2]…全部后移</li><li>将抽取元素赋值给r[pos]</li></ul><p>对每一个初始数组的元素调用insert()函数</p></li><li><p>具体代码:</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++"> void insert(int x)&#123;    int pos;    for(pos &#x3D; 0; pos &lt; tot; pos++ )        if(r[pos] &gt;&#x3D; x) break;    for(int k &#x3D; tot; k &gt;&#x3D; pos; k--)&#123;    r[k+1] &#x3D; r[k];    &#125;    r[pos] &#x3D; x;    tot++&#125;  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>优化空间：<br>  在原数组中整理排序，使用被浪费掉的原始空间。<br>  具体代码：</p>  <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void insert(int x)&#123;    for(int i &#x3D; 0; i &lt; n; i++)&#123;        int k, x &#x3D; a[i];        for(k &#x3D; 0; k &lt; i &amp;&amp; a[k] &lt; x; k++); &#x2F;&#x2F;找到插入点k        for(int p &#x3D; i - 1; p &gt;&#x3D; k; p--)&#123;            a[p + 1] &#x3D; a[p];        a[k] &#x3D; x;        &#125;    &#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>  插入排序的复杂度为O(n^2)</p></li></ul><h2 id="Bubble-sort"><a href="#Bubble-sort" class="headerlink" title="Bubble_sort"></a>Bubble_sort</h2><p>  冒泡排序类似于泡泡浮出水面的过程，气泡浮出水面 ，由于水压 $/rho$ gh不断减小，气泡不断变大，冒泡排序每次考虑相邻的两个元素，比较大小并将较大的放在右侧，重复n次的过程就像气泡冒出水面。<br>  本质是每次将最大的数字放到最右侧。</p><ul><li>代码实现：<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void bubble_sort(int a[], int n)&#123;    for(int i &#x3D; 0; i &lt; n; i++)        for(int j &#x3D; 0; j &lt; n - 1; j++)             &#x2F;&#x2F;改成j &lt; n - i - 1可以节省每一次尾部已经排完的元素比较次数            if(a[j] &gt; a[j + 1]) swap(a[j], a[j + 1]);            &#x2F;&#x2F;swap()在algorithm库中&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul><p>  冒泡排序的复杂度也为O(n^2)</p><h2 id="Select-sort"><a href="#Select-sort" class="headerlink" title="Select_sort"></a>Select_sort</h2><p>  选择排序的原理是进行多次扫描，将每一次扫描得到的最小元素置于最做左侧，经过n次扫描可得到从小到大的一次序列</p>   <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void selct_sort(int a[], int n)&#123;for(int i &#x3D; 0; i &lt; n; i++)&#123;    int cur_min &#x3D; i;    for(int j &#x3D; i; j &lt; n; i++)&#123;    if(a[j] &lt; a[cur_min]) cur_min &#x3D; j;    swap(a[i], a[cur_min])&#125;&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>  选择排序的复杂度为O(n^2)</p><ul><li>以上三种排序方式均为简单排序，代码实现比较简单，但是效率比较差，需要较长的排序时间。<br>已经证明，基于比较的排序最快也只能做到O(nlogn)，以下介绍两种O(nlogn)的排序方法：</li></ul><h1 id="优化排序"><a href="#优化排序" class="headerlink" title="优化排序"></a>优化排序</h1><h2 id="Merge-sort"><a href="#Merge-sort" class="headerlink" title="Merge_sort"></a>Merge_sort</h2><p>  归并排序基于分治的思想，简要思路如下：</p><ul><li>将初始数组a[l, r]拆分成a[l, mid], a[mid + 1, r] 两个部分</li><li>调用MergeSort(l, mid), MergeSort(mid + 1, r), 将两个小部分各自排好序</li><li>将两个有序数组合并成一个大的有序数组，覆盖a[l, r]<br>代码实现：<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void mergesort(int a[], int l, int r)&#123;    if(l - r &#x3D;&#x3D; 1) return;    int mid &#x3D; (l + r) &#x2F; 2;    mergesort(a, l, mid);    mergesort(a, mid, r);&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>将两个数组合并的方法：<ul><li>从左到右生成数组可以看成从A, B里面一个一个取元素。</li><li>若A已经取完，则从B中取；若B已经取完，则从A中取。</li><li>A, B都没取完，则比较A, B头部元素大小，选择小的那个，大小一样则任意取。<br>代码实现<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">int ls &#x3D; l, lt &#x3D; mid, rs &#x3D; mid, rt &#x3D; r, pos &#x3D; l;    while(ls &lt; lt &amp;&amp; rs &lt; rt)&#123;        if(a[ls] &lt; a[rs])            t[pos++] &#x3D; a[ls++];        else            t[pos++] &#x3D; a[rs++];    &#125;    while(ls &lt; lt)&#123;        t[pos++] &#x3D; a[ls++];    &#125;    while(rs &lt; rt)&#123;        t[pos++] &#x3D; a[rs++];    &#125;    for(int i &#x3D; l; i &lt; r; i++)&#123;a[i] &#x3D; t[i]    &#125;  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li></ul></li></ul><h2 id="Quick-sort"><a href="#Quick-sort" class="headerlink" title="Quick_sort"></a>Quick_sort</h2><p>  快速排序，假设有一群人，按照身高排序，可以按照以下方式：</p><ul><li><p>随便选一个人</p></li><li><p>比之矮的排左边，比之高的排右边</p></li><li><p>把他左右边的人分别排序<br>代码实现：</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void quick_sort(int a[], int l, int r)&#123;if(r - l &lt;&#x3D; 1) return;    int flag &#x3D; a[l];&#x2F;&#x2F;哨兵，可以伪随机化为a[rand() % (r - l) + l， 防止被卡]    int x &#x3D; l, y &#x3D; r;    int x, y;    for(int i &#x3D; l; i &lt; r; i++)&#123;        if(a[i] &lt; flag)            t[x++] &#x3D; a[i];        if(a[i] &gt; flag)            t[--y] &#x3D; a[i];    &#125;    for(int i &#x3D; l; i &lt; x; i++)        a[i] &#x3D; t[i];    for(int i &#x3D; y; i &lt; r, i++)        a[i] &#x3D; t[i];    for(int i &#x3D; x; i &lt; y; i++)        a[i] &#x3D; flag;    quick_sort(a, l, x);    quick_sort(a, y, r);&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li><li><p>排序STL sort可以直接使用algorithm库排序，指定cmp函数反向排序，或者重载小于号定义</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
       
     </entry>
     
