@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>PowerPoint</title>
+      <link href="/2021/10/06/PowerPoint/"/>
+      <url>/2021/10/06/PowerPoint/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js"></script><ul><li>辩论: <a href="/PPT/Immigration.html">Immigration</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 功能区 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> PPT </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>使用Anaconda管理R语言包及JupyterNotebook运行R</title>
       <link href="/2021/09/18/%E4%BD%BF%E7%94%A8Anaconda%E7%AE%A1%E7%90%86R%E8%AF%AD%E8%A8%80/"/>
       <url>/2021/09/18/%E4%BD%BF%E7%94%A8Anaconda%E7%AE%A1%E7%90%86R%E8%AF%AD%E8%A8%80/</url>
